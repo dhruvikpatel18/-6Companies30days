@@ -1,0 +1,21 @@
+class Solution {
+    public int maxRotateFunction(int[] nums) {
+        if(nums.length ==0) return 0;
+
+        int sum=0, iteration = 0, len = nums.length;
+
+        //calculate the sum and total iteration of F(0)  only
+        for(int i=0; i<len; i++){
+            sum += nums[i];
+            iteration += (nums[i]*i);
+        }
+        //now calculate iteration for F(1),F(2),..,F(n) from its previous
+        int max = iteration;
+        for(int i=1; i<len; i++){
+            //for next iteration remove one entry value of each entry and its prev*len
+            iteration = iteration-sum + nums[i-1]*len;
+            max = Math.max(max,iteration);
+        }
+        return max;
+    }
+}
