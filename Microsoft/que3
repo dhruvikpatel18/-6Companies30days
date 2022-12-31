@@ -1,0 +1,26 @@
+class Solution {
+    public String getHint(String secret, String guess) {
+        //count array for digits of secret
+        int[] secretCount = new int[10];
+        //count array for digits of guess
+        int[] guessCount = new int[10];
+        int bulls = 0;
+        char schar, gchar;
+        for(int i=0; i<secret.length(); i++){
+            schar = secret.charAt(i);
+            gchar = guess.charAt(i);
+
+            if(schar == gchar){
+                bulls++;
+            }else{
+                secretCount[schar-'0']++;
+                guessCount[gchar-'0']++;
+            }      
+        }
+        int cows = 0;
+        for(int i=0; i<secretCount.length; i++){
+            cows += Math.min(secretCount[i],guessCount[i]);
+        }
+        return bulls+"A"+cows+"B";
+    }
+}
