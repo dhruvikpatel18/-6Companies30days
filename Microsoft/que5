@@ -1,0 +1,33 @@
+class Solution {
+    public List<Integer> largestDivisibleSubset(int[] nums) {
+        //using DP
+        List<Integer> res = new ArrayList<>();
+        if(nums == null || nums.length == 0){
+            return res;
+        }
+        //step-1: sort nums in increasing order, bcz it make sure that all divisors of elements appear before it
+        Arrays.sort(nums);
+
+        //step-2:Create dp List size of nums,dp[i] will stores size of divisible subset ending with nums[i], minimum value of dp[i] would be 1 bcz (n%n will always equal to 0)
+        List<List<Integer>> dp = new ArrayList<>();
+        for(int num:nums)dp.add(new ArrayList<>());
+
+        for(int i=0; i<nums.length; i++){
+            List<Integer> max = new ArrayList<>();
+            for(int k=0; k<i; k++){
+                if(nums[i]%nums[k] == 0 && max.size()<dp.get(k).size()){
+                    max = dp.get(k);
+                }
+            }
+            dp.get(i).addAll(max);
+            dp.get(i).add(nums[i]);//self
+        }
+        //step-3:Traverse dp and find largest subset and add it to res
+        for(int i=0; i<dp.size(); i++){
+            if(res.size()<dp.get(i).size()){
+                res = dp.get(i);
+            }
+        }
+        return res;
+    }
+}
