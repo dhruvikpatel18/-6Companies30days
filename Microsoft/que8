@@ -1,0 +1,73 @@
+class Solution {
+    List<Integer> b2a = new ArrayList<>();//bob to alice
+    int maxSum = Integer.MIN_VALUE;
+    public int mostProfitablePath(int[][] edges, int bob, int[] amount) {
+        int n = amount.length;
+        //set graph
+        Map<Integer,Set<Integer>> graph = new HashMap<>();
+        for(int i=0; i<n; i++){
+            graph.put(i,new HashSet<>());
+        }
+        for(int[] edge: edges){
+            int u = edge[0];
+            int v = edge[1];
+            graph.get(v).add(u);
+            graph.get(u).add(v);
+        }
+        //1.Find path from bob to alice
+        //dfs will store the path in b2a list
+        dfs(bob,0,graph,new ArrayList<Integer>(){{add(bob);}}, new HashSet<Integer>(){{add(bob);}});
+
+        //2.Modify tree with node amount
+        for(int i=0; i<b2a.size()/2; i++){
+            amount[b2a.get(i)] = 0;//set it 0 as bob is visited
+        }
+        if(b2a.size()%2 !=0){//If Alice and Bob reach the node simultaneously
+            int m = b2a.get(b2a.size()/2);
+            amount[m] /= 2;
+        }
+
+        //3.get result
+        Set<Integer> visited = new HashSet<>();
+        visited.add(0);
+        maxSumPath(0,graph,amount,visited,amount[0]);
+        return maxSum;
+    }
+    //dfs
+    private boolean dfs(int root,int target,Map<Integer,Set<Integer>> graph,List<Integer> currPath, Set<Integer> visited){
+        //here root means bob bcz we start from bob
+        if(root == target){
+            b2a = new ArrayList<>(currPath);
+            return true;
+        }
+        for(int child:graph.get(root)){
+            if(visited.contains(child)) continue;
+            visited.add(child);
+            currPath.add(child);
+            if(dfs(child,target,graph,currPath,visited)){
+                return true;
+            }
+            //backtrack
+            currPath.remove(currPath.size()-1);
+            visited.remove(child);
+        }
+        return false;
+    }
+    //maxPathSum
+    private void maxSumPath(int root, Map<Integer,Set<Integer>> graph, int[] amount,Set<Integer> visited, int currSum ){
+        int cnt = 0;
+        for(int child:graph.get(root)){
+            if(visited.contains(child)) continue;
+            visited.add(child);
+            maxSumPath(child,graph,amount,visited,currSum+amount[child]);
+            //backtrack
+            visited.remove(child);
+            cnt++;
+        }
+        //leafNode
+        if(cnt == 0){
+            maxSum = Math.max(maxSum,currSum);
+        }
+        return;
+    }
+}
