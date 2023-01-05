@@ -1,0 +1,23 @@
+class Solution {
+    public double nthPersonGetsNthSeat(int n) {
+        // //dp solution: O(n), O(n)
+        // //when n=1 , ans = 1
+        // //whren n=2 , ans = 0.5
+        // //for othe n ans will be (1/n) + ((n-2)/n)*prev nth ans
+        // if(n==1) return 1;
+        // double[] dp = new double[n];
+        // dp[0] =1.0;
+        // dp[1] = 0.5;
+        // for(int i=2; i<dp.length; i++){
+        //     double d = (1/(1.0*n))+((n-2/(1.0*n))*dp[i-1]);
+        //     dp[i] = d;
+        // }
+        // return dp[n-1];
+
+        
+        //Math solution : O(1), O(1)
+        if(n==1)
+             return 1;
+         return 0.5;
+    }
+}
