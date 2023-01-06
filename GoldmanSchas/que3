@@ -1,0 +1,12 @@
+class Solution {
+    public int trailingZeroes(int n) {
+        int ans =0;
+
+        //we only get trailing zeroes at 5! or after that
+        while(n >=5){
+            n /= 5;
+            ans += n;
+        }
+        return ans;
+    }
+}
