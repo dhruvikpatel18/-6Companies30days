@@ -1,0 +1,21 @@
+class Solution {
+    public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
+        //create (capital,profits) pairs and put into PQ cap, this is sort by capitals in incresing order
+        //keep polling from cap until project out of current capital capabily, put them into PQ prof, which sort by profit in decreasing order
+        PriorityQueue<int[]> cap = new PriorityQueue<>((a,b) -> (a[0]-b[0]));
+        PriorityQueue<int[]> prof = new PriorityQueue<>((a,b) -> (b[1]-a[1]));
+
+        for(int i=0; i<profits.length; i++){
+            cap.add(new int[]{capital[i],profits[i]});
+        }
+
+        for(int i=0; i<k ;i++){
+            while(!cap.isEmpty() && cap.peek()[0] <= w){
+                prof.add(cap.poll());
+            }
+            if(prof.isEmpty()) break;
+            w+= prof.poll()[1];
+        }
+        return w;
+    }
+}
