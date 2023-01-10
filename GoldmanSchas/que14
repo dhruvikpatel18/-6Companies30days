@@ -1,0 +1,23 @@
+class Solution {
+    public int countNicePairs(int[] nums) {
+        Map<Integer,Integer> map = new HashMap<>();
+        long count =0;
+        for(int n:nums){
+            //iterate over each number and calculate its key
+            int key = n-reverse(n);
+            //check it in map if available thn add its value into count
+            if(map.containsKey(key)){
+                count += map.get(key);
+            }
+            //put key and its value in map
+            map.put(key,map.getOrDefault(key,0)+1);
+        }
+        return (int)(count%1000000007);
+    }
+    private int reverse(int n){
+        //create StringBuilder and store this number
+        StringBuilder sb = new StringBuilder().append(n);
+        //reverse num and convert into int and return it
+        return Integer.parseInt(sb.reverse().toString());
+    }
+}
