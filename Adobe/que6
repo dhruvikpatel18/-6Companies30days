@@ -1,0 +1,31 @@
+class Solution {
+    int[][] direction = new int[][]{{2,1},{-2,1},{2,-1},{-2,-1},{1,2},{1,-2},{-1,2},{-1,-2}};
+
+    public double knightProbability(int n, int k, int r, int c) {
+        if(r<0 ||c<0 ||n<r ||n<c) return 0;
+        double[][] preways = new double[n][n];
+        preways[r][c] = 1;
+        double res = 0;
+        for(int x=1; x<=k; x++){
+            double[][] ways = new double[n][n];
+            for(int i=0; i<n; i++){
+                for(int j=0; j<n; j++){
+                    for(int[] dir : direction){
+                        int oldR = i-dir[0];
+                        int oldC = j-dir[1];
+                        if(oldR >=0 && oldC >=0 && oldR <n && oldC <n){
+                            ways[i][j] += (preways[oldR][oldC]/8.0);
+                        }
+                    }
+                }
+            }
+            preways = ways;
+        }
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++){
+                res += preways[i][j];
+            }
+        }
+        return res;
+    }
+}
