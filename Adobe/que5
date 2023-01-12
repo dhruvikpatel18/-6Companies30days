@@ -1,0 +1,30 @@
+class Solution {
+    //initial count is 2 for 0 and 1
+    int count = 2;
+    public int findIntegers(int n) {
+//         start with 1. And then append 0 everytime and 1 only when previous char is not 1.
+//         While appending we calculate the value and stop when it exceed n.
+
+//          Appending 0 means we multiply the number by 2.
+//          (Example : num = 101 (5). Append 0; num = 1010 which is nothing but 5*2 = 10)
+
+//          Appending 1 means we multiply the number by 2 and add.
+
+        dfs(1,1,n);
+        return count;
+    }
+    private void dfs(int prev, int num, int n){
+        //append 0
+
+        if(num*2 <=n){
+            count++;
+            dfs(0,num*2,n);
+        }
+
+        //append 1
+        if(prev == 0 && num*2+1 <= n){
+            count++;
+            dfs(1,num*2+1,n);
+        }
+    }
+}
