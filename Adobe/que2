@@ -1,0 +1,17 @@
+class Solution {
+    public boolean increasingTriplet(int[] nums) {
+        //start with two largest values, as soon as we find a number bigger then both, while both have been updated, return true
+        
+        int first = Integer.MAX_VALUE, second = Integer.MAX_VALUE;
+        
+        for(int n:nums){
+            //update first if n is smaller then both
+            if(n <= first){first = n;}
+            //update second only if it greater then 
+            else if(n<=second){second = n;}
+            //return if you find a number bigger then both
+            else return true;
+        }
+        return false;
+    }
+}
