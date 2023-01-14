@@ -1,0 +1,26 @@
+ class Solution {
+    public long maxMatrixSum(int[][] matrix) {
+        //if negative numbers are even, then all numbers consider as positive and add it to sum
+        //if negative numbers are odd, then one will left, and that one should smaller one for maximize sum
+        long sum =0;
+        int neg =0;
+        int min = Integer.MAX_VALUE;
+
+        for(int i=0; i<matrix.length; i++){
+            for(int j=0; j<matrix.length; j++){
+                if(matrix[i][j] <0){
+                    neg++;
+                }
+                sum +=Math.abs(matrix[i][j]);
+                if(min > Math.abs(matrix[i][j])){
+                    min = Math.abs(matrix[i][j]);
+                }
+            }
+        }
+        if(neg % 2 == 0){//even
+            return sum;
+        }else{
+            return sum - 2*min;
+        }
+    }
+}
