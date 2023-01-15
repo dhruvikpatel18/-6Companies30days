@@ -1,0 +1,56 @@
+class StockPrice {
+    //TC:O(NlogN)
+    //SC:O(N)
+    Queue <int[]> maxQ;
+    Queue <int[]> minQ;
+    HashMap<Integer,Integer> map;
+    int currTimestamp;
+
+    public StockPrice() {
+        maxQ = new PriorityQueue<>((a,b)->b[1]-a[1]);
+        minQ = new PriorityQueue<>((a,b)->a[1]-b[1]);
+        map = new HashMap<>();
+        currTimestamp = 0;
+    }
+    
+    public void update(int timestamp, int price) {
+        //update currtimestamp
+        currTimestamp = timestamp > currTimestamp ? timestamp : currTimestamp;
+
+        //add prices into queues
+        maxQ.add(new int[]{timestamp,price});
+        minQ.add(new int[]{timestamp,price});
+
+        //adding into map
+        map.put(timestamp,price);
+    }
+    
+    public int current() {
+        return map.get(currTimestamp);
+    }
+    
+    public int maximum() {
+        //Find the first max value that corresponds with value saved in hashmap
+        // to validate that is the correct one.
+        while(maxQ.peek()[1] != map.get(maxQ.peek()[0])){
+            maxQ.poll();
+        }
+        return maxQ.peek()[1];
+    }
+    
+    public int minimum() {
+        while(minQ.peek()[1] != map.get(minQ.peek()[0])){
+            minQ.poll();
+        }
+        return minQ.peek()[1];
+    }
+}
+
+/**
+ * Your StockPrice object will be instantiated and called as such:
+ * StockPrice obj = new StockPrice();
+ * obj.update(timestamp,price);
+ * int param_2 = obj.current();
+ * int param_3 = obj.maximum();
+ * int param_4 = obj.minimum();
+ */
