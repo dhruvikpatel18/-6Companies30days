@@ -1,0 +1,33 @@
+class Solution {
+    public boolean canPartitionKSubsets(int[] nums, int k) {
+        int sum=0;
+        for(int i:nums){
+            sum += i;
+        }
+        //sum%k must be 0 if not return false
+        if(sum%k !=0 || nums.length < k) return false;
+        Arrays.sort(nums);
+        //our task is to find target(sum/k) in nums k times 
+        return dfs(nums,sum/k,nums.length-1,new int[k]);  
+    }
+    private boolean dfs(int[]a, int target, int i, int[] bucket){
+        //if we have taken all ele
+        if(i == -1){
+            return true;
+        }
+        //fill bucket
+        for(int j=0; j<bucket.length; j++){
+            if(bucket[j]+a[i] <= target){
+                bucket[j] += a[i];
+                //now go to next smaller ele
+                if(dfs(a,target,i-1,bucket)) return true;
+                //bactrack
+                bucket[j] -= a[i];
+            }
+            //if bucket is empty means we have not taken any ele
+            if(bucket[j] == 0) break;  
+
+        }
+        return false;
+    }
+}
