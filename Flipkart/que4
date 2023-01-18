@@ -1,0 +1,17 @@
+class Solution {
+    public int findTheWinner(int n, int k) {
+        int arr[] = new int[n];
+        for(int i=0; i<n; i++){
+            arr[i] = i+1;
+        }
+        return helper(n,k,arr,(k-1)%n);
+    }
+    private int helper(int n, int k, int[] arr, int counter){
+        if(n==1) return arr[0];
+        for(int i=counter+1; i<n; i++){
+            arr[i-1] = arr[i];
+        }
+        n--;
+        return helper(n,k,arr,(counter+(k-1))%n);
+    }
+}
