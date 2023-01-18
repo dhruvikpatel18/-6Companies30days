@@ -1,0 +1,32 @@
+class Solution {
+    public int[] closestPrimes(int left, int right) {
+        // using sieve of eratosthenes 
+        boolean[] isPrime = new boolean[right+1];
+        Arrays.fill(isPrime,true);
+        isPrime[0] = isPrime[1] = false;
+        //find prime numbers in range of [2,right]
+        findPrime(right,isPrime);
+        ArrayList<Integer> primes = new ArrayList<>();
+        for(int i=left; i<=right; i++){
+            if(isPrime[i]) primes.add(i);
+        }
+        int min = Integer.MAX_VALUE;
+        int[] res = null;
+        for(int i=0; i<primes.size()-1; i++){
+            if(primes.get(i+1)-primes.get(i) < min){
+                min=primes.get(i+1)-primes.get(i);
+                res = new int[]{primes.get(i),primes.get(i+1)};
+            }
+        }
+        return res == null? new int[]{-1,-1}:res;
+    }
+    private void findPrime(int n, boolean[] isPrime){
+        for(int i=2; i*i <=n; i++){
+            if(isPrime[i]){
+                for(int j=i*i; j<=n; j+=i){
+                    isPrime[j] = false;
+                }
+            }
+        }
+    }
+}

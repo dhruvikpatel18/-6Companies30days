@@ -1,0 +1,58 @@
+class Solution {
+    class Pair{
+        int v; int w;
+        Pair(int v, int weight){
+            this.v=v; this.w=weight;
+        }
+    }
+    public int findTheCity(int n, int[][] edges, int threshDist) {
+        ArrayList<ArrayList<Pair>> adj = new ArrayList<>();
+        for(int i=0; i<n; i++){
+            adj.add(new ArrayList<>());
+        } 
+
+        for(int i=0; i<edges.length; i++){
+            int u=edges[i][0];
+            int v=edges[i][1];
+            int w=edges[i][2];
+            adj.get(u).add(new Pair(v,w));  
+            adj.get(v).add(new Pair(u,w));           
+        } 
+
+        int ans = Integer.MAX_VALUE; int node = 0;
+        for(int i=0; i<n; i++){
+            int val=calculateDist(adj,i,threshDist);
+            if(val<=ans){
+                ans=val; node=i;
+            }                        
+        }        
+        return node;
+    }
+
+    int calculateDist(ArrayList<ArrayList<Pair>> adj, int src, int threshDist){
+        int n=adj.size();
+
+        int dist[] = new int[n];
+        Arrays.fill(dist,Integer.MAX_VALUE);        
+        dist[src]=0;
+
+        ArrayDeque<Integer> q = new ArrayDeque<>();
+        q.add(src);
+
+        while(!q.isEmpty()){
+            int u = q.poll();
+            for(Pair ajd: adj.get(u)){
+                if(dist[ajd.v]>(dist[u]+ajd.w)){
+                    dist[ajd.v]=dist[u]+ajd.w;
+                    q.add(ajd.v);
+                }
+            }
+        }
+
+        int count=0;
+        for(int i=0; i<n; i++){
+            if(dist[i]<=threshDist) count++;
+        }
+        return count-1;
+    }
+}
