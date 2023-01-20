@@ -1,0 +1,40 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    Map<TreeNode, Integer> map = new HashMap<>();//for memoization
+    public int rob(TreeNode root) {
+        if(root == null) return 0;
+        if(map.containsKey(root)){
+            return map.get(root);
+        }
+        //calculate for odd levels node 
+        int oddSum = root.val;
+        if(root.left != null){
+            oddSum += rob(root.left.left);
+            oddSum += rob(root.left.right);
+        }
+        if(root.right != null){
+            oddSum += rob(root.right.left);
+            oddSum += rob(root.right.right);
+        }
+        //calculate for even levels node
+        int evenSum = rob(root.left) + rob(root.right); 
+
+        int res = Math.max(oddSum,evenSum);
+        map.put(root,res);
+        return res;
+    }
+}
