@@ -1,0 +1,18 @@
+class Solution {
+    public int maxConsecutive(int bottom, int top, int[] special) {
+        int ans = Integer.MIN_VALUE;
+        Arrays.sort(special);
+        //from bottom to first special floor
+        ans = Math.max(ans,special[0] - bottom);
+
+        //in between special floors
+        for(int i=1; i<special.length; i++){
+            ans = Math.max(ans,special[i]-special[i-1]-1);
+        }
+
+        //from last special floor to top
+        ans = Math.max(ans,top-special[special.length-1]);
+
+        return ans;
+    }
+}
