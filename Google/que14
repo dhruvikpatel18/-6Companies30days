@@ -1,0 +1,13 @@
+class Solution {
+    public boolean isStrictlyPalindromic(int n) {
+        for(int base = 2; base < n-2; base++){
+            String str = Integer.toString(n,base);
+            //check palindrome
+            int i=0, j = str.length()-1;
+            while(i<=j/2){
+                if(str.charAt(i) != str.charAt(j)) return false;
+            }
+        }
+        return true;
+    }
+}
