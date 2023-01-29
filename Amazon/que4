@@ -1,0 +1,44 @@
+class TweetCounts {
+    Map<String,List<Integer>> map;
+    public TweetCounts() {
+        map = new HashMap<>();
+    }
+    
+    public void recordTweet(String tweetName, int time) {
+        map.computeIfAbsent(tweetName, list -> new ArrayList<>()).add(time);
+    }
+    
+    public List<Integer> getTweetCountsPerFrequency(String freq, String tweetName, int startTime, int endTime) {
+        List<Integer> result = new ArrayList<>();
+        //get list times when particular tweet recorded
+        List<Integer> tweetTimes = map.get(tweetName);
+        int windowsize = getWindowSize(freq);
+        int size = (endTime-startTime)/windowsize;
+        int[] timeIntervals = new int[size+1];
+        for(int tweetTime : tweetTimes){
+            if(tweetTime >= startTime && tweetTime <= endTime){
+                timeIntervals[(tweetTime-startTime)/windowsize]++;
+            }
+        }
+        for(int timeInterval : timeIntervals){
+            result.add(timeInterval);
+        }
+        return result;
+    }
+    private int getWindowSize(String freq){
+        if("minute".equals(freq)){
+            return 60;
+        }else if("hour".equals(freq)){
+            return 60*60;
+        }else{
+            return 60*60*24;
+        }
+    }
+}
+
+/**
+ * Your TweetCounts object will be instantiated and called as such:
+ * TweetCounts obj = new TweetCounts();
+ * obj.recordTweet(tweetName,time);
+ * List<Integer> param_2 = obj.getTweetCountsPerFrequency(freq,tweetName,startTime,endTime);
+ */
